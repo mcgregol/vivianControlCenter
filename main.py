@@ -20,7 +20,7 @@ def press(setFilePath):
 
 app = gui("vivtoolFetch", "400x400")
 
-app.setBg("orange", override=True)
+app.setBg("grey", override=True)
 app.setOnTop(stay=True)
 
 app.startLabelFrame("Beginning date of data")
