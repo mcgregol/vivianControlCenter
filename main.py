@@ -5,7 +5,10 @@ def setDates():
     endDate = app.getDatePicker("dp2")
     print(startDate, endDate)
 
-app = gui()
+app = gui("vivtoolFetch")
+
+app.setBg("orange", override=True)
+app.setOnTop(stay=True)
 
 app.startLabelFrame("Beginning date of data")
 app.addDatePicker("dp1")
