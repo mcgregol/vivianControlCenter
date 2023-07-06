@@ -1,20 +1,23 @@
 from appJar import gui
 import tkinter.filedialog
 
+# creates and sets save_path variable to contents of save_path.txt
 f = open("save-path.txt", "r")
 save_path = f.read()
 
+# updates startDate and endDate variables
 def setDates():
     startDate = app.getDatePicker("dp1")
     endDate = app.getDatePicker("dp2")
     print(startDate, endDate)
 
+# triggers updating of save_path variable
 def press(setFilePath):
     save_path = tkinter.filedialog.askdirectory()
     with open('save-path.txt', 'w') as file:
         file.write(save_path)
     app.setLabel("file_path", "Saving to: " + "\'" + save_path + "\'")
-    
+
 app = gui("vivtoolFetch")
 
 app.setBg("orange", override=True)
