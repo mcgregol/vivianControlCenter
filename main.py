@@ -33,7 +33,7 @@ app.setDatePickerRange("dp1", 2010, 2050)
 app.setDatePickerRange("dp2", 2010, 2050)
 app.setDatePicker("dp1")
 app.setDatePicker("dp2")
-app.addButton("Set Save Location", press)
+app.addButton("Change Save Location", press)
 app.addLabel("file_path", "Saving to: \'" + save_path + "\'")
 app.addButton("Retrieve Data", setDates)
 
