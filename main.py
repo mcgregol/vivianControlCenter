@@ -18,7 +18,7 @@ def press(setFilePath):
         file.write(save_path)
     app.setLabel("file_path", "Saving to: " + "\'" + save_path + "\'")
 
-app = gui("vivtoolFetch")
+app = gui("vivtoolFetch", "400x400")
 
 app.setBg("orange", override=True)
 app.setOnTop(stay=True)
