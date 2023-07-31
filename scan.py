@@ -1,4 +1,8 @@
 import subprocess
+import time
 
 scan_output = subprocess.run(['vivtool', 'scan', '-v'], stdout=subprocess.PIPE)
-print(scan_output.stdout.decode('utf-8'))
+
+for i in range(30):
+    print(scan_output.stdout.decode('utf-8'))
+    time.sleep(1)
