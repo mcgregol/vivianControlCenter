@@ -12,5 +12,4 @@ if scan.poll() is None:
         
 scan_output, _ = scan.communicate()
 
-#print(str(scan_output).replace('b', ''))
 print(scan_output.decode('utf-8'))
