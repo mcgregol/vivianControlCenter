@@ -1,15 +1,16 @@
-import subprocess
-import time
+import subprocess, time
 
-process = subprocess.Popen('vivtool scan', stdout=subprocess.PIPE, shell=True)
+scan = subprocess.Popen('vivtool scan', shell=True, stdout=subprocess.PIPE)
 
-try:
-    # Try to get the output for 15 seconds
-    stdout = process.communicate(timeout=5)
-except subprocess.TimeoutExpired:
-    # If the process does not end after 15 seconds, kill it
-    process.kill()
-    stdout = process.communicate()
+time.sleep(5)
 
-# Now stdout will have the output and errors till 15 seconds after which the process was killed
-print(stdout)
+if scan.poll() is None:
+    scan.terminate()
+    time.sleep(0.5)
+    if scan.poll() is None:
+        scan.kill()
+        
+scan_output, _ = scan.communicate()
+
+#print(str(scan_output).replace('b', ''))
+print(scan_output.decode('utf-8'))
