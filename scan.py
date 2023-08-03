@@ -24,8 +24,11 @@ for line in lines[2:]:
     key, value = line.split(' ')
     dictionary[key] = value
 
-keys_list = list(dictionary.keys())
+sensors_list = []
 
-player = Sensor(list(dictionary.keys())[0], "Liam McGregor", dictionary[keys_list[0]])
-
-print(player.list())
+for key, value in dictionary.items():
+    sensor = Sensor(key, "Player Name", value)
+    sensors_list.append(sensor)
+    
+for sensor in sensors_list:
+    print(sensor.list() + "\n")
