@@ -28,5 +28,4 @@ keys_list = list(dictionary.keys())
 
 player = Sensor(list(dictionary.keys())[0], "Liam McGregor", dictionary[keys_list[0]])
 
-#print(player.name + "\nDevice ID: " + player.id + "\nUUID: " + player.uuid)
 print(player.list())
