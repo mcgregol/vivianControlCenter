@@ -14,8 +14,14 @@ if scan.poll() is None:
         
 scan_output, _ = scan.communicate()
 
-pretty = scan_output.decode('utf-8')
+pretty_string = scan_output.decode('utf-8')
 
-arr = pretty.split('\n')
+lines = pretty_string.splitlines()
 
-print(arr[2])
+dictionary = {}
+
+for line in lines[2:]:
+    key, value = line.split(' ')
+    dictionary[key] = value
+    
+print(dictionary)
