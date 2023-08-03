@@ -3,7 +3,7 @@ import subprocess, time
 
 scan = subprocess.Popen('vivtool scan', shell=True, stdout=subprocess.PIPE)
 
-# change to 10-15 for irl use
+# change to 10-15 seconds for irl use
 time.sleep(5)
 
 if scan.poll() is None:
@@ -23,9 +23,9 @@ dictionary = {}
 for line in lines[2:]:
     key, value = line.split(' ')
     dictionary[key] = value
+    
+keys_list = list(dictionary.keys())
 
-print(dictionary)
+player = Sensor(list(dictionary.keys())[0], "Liam McGregor", dictionary[keys_list[0]])
 
-liggs = Sensor(dictionary[keys_list[0]], "Liam McGregor", 503454346)
-
-print(liggs.id)
+print(player.name + "\nDevice ID: " + player.id + "\nUUID: " + player.uuid)
