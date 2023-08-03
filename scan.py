@@ -25,3 +25,7 @@ for line in lines[2:]:
     dictionary[key] = value
 
 print(dictionary)
+
+liggs = Sensor(dictionary[keys_list[0]], "Liam McGregor", 503454346)
+
+print(liggs.id)
