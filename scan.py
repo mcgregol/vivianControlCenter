@@ -20,7 +20,7 @@ pretty_string = scan_output.decode('utf-8')
 lines = pretty_string.splitlines()
 dictionary = {}
 
-# Parse each line into a key-value pair and store it in the dictionary, skipping the first two lines
+# Parse each line into a key-value pair and store it in the dictionary, skipping the first two lines of output
 for line in lines[2:]:
     key, value = line.split(' ')
     dictionary[key] = value
