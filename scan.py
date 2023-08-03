@@ -1,3 +1,4 @@
+from sensor import Sensor
 import subprocess, time
 
 scan = subprocess.Popen('vivtool scan', shell=True, stdout=subprocess.PIPE)
@@ -13,4 +14,8 @@ if scan.poll() is None:
         
 scan_output, _ = scan.communicate()
 
-print(scan_output.decode('utf-8'))
+pretty = scan_output.decode('utf-8')
+
+arr = pretty.split('\n')
+
+print(arr[2])
