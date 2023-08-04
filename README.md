@@ -1,6 +1,8 @@
 # VivianControlCenter
 A graphic user interface to easily transfer data from Viiiiva heart rate monitor to MacBook.
 
+### WARNING: still in early stages of development
+
 ## Details
 🚀 Experience unparalleled efficiency with our advanced Sensor Data Extraction Tool! 🚀
 
