@@ -30,7 +30,7 @@ sensors_list = []
 
 # Convert each key-value pair in the dictionary into a Sensor object and add it to the list
 for key, value in dictionary.items():
-    sensor = Sensor(key, "Player Name", value)
+    sensor = Sensor(key, value)
     sensors_list.append(sensor)
 
 # Print the details of each sensor
