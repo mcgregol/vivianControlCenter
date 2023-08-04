@@ -43,7 +43,7 @@ def press(button):
 		    print(sensor.list() + "\n")
 
 
-app = gui("Vivian Control Center")
+app = gui("Vivian Control Center", "400x400")
 
 app.setBg("grey", override=True)
 app.setOnTop(stay=True)
