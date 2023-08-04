@@ -30,6 +30,8 @@ sensors_list = []
 
 # Convert each key-value pair in the dictionary into a Sensor object and add it to the list
 for key, value in dictionary.items():
+    key = key[1:-1]
+    value = value[1:-1]
     sensor = Sensor(key, value)
     sensors_list.append(sensor)
 
