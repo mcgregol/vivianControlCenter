@@ -4,16 +4,18 @@ A graphic user interface to easily transfer data from Viiiiva heart rate monitor
 ### WARNING: still in early stages of development
 
 ## Details
-🚀 Experience unparalleled efficiency with our advanced Sensor Data Extraction Tool! 🚀
+🎉 Introducing Vivian Control Center - the future of sensor data management! 🎉
 
-Have you ever found yourself lost in the labyrinth of sensor data, yearning for a simple, streamlined solution to extract and process your information? Your search ends here!
+Are you tired of manually wading through seas of sensor data? Want a tool that automates the process, streamlining your workflows and making data management a breeze? Look no further!
 
-Our state-of-the-art software tool is expertly designed to deliver an incredibly efficient data extraction experience. It seamlessly interfaces with your sensor hardware using the powerful vivtool scan command, systematically performs scans, and skillfully gathers data in real-time.
+Vivian Control Center is a revolutionary software solution, designed with the sole purpose of making sensor data management simple, efficient, and stress-free. It speaks the language of your hardware through the potent vivtool scan command, conducting real-time scans and extracting valuable data with pinpoint accuracy.
 
-What truly sets our tool apart is its adeptness at parsing scan results. It intelligently deciphers the byte-encoded output, breaking it down into easily interpretable strings. By skipping unnecessary introductory lines, it focuses only on the meaningful data, converting it into a practical dictionary format.
+But that's just the beginning!
 
-But we didn't stop there!
+Vivian Control Center is an expert code-breaker. It deciphers byte-encoded output from your scans and converts it into easy-to-understand strings. Our software skillfully focuses on the essential data, ignoring redundant introductory lines, and converts the key-value pairs into a handy dictionary format.
 
-Our software takes data processing a notch higher by creating Sensor objects for each key-value pair in the dictionary. These objects, stored in a neat list, can be easily maneuvered for any further applications you might require.
+Wait, there's more!
 
-End your struggle with manual data scanning today. Upgrade to our Sensor Data Extraction Tool and step into the future of efficient, automated, and streamlined sensor data management. Say goodbye to complexity, and hello to simplicity and efficiency!
+Vivian Control Center takes data processing to the next level, creating Sensor objects for every dictionary entry. Stored in an accessible list, these objects are ready for you to manipulate, analyze, or visualize - whatever suits your needs best!
+
+Step into the future of sensor data management with Vivian Control Center. Simplify your process, enhance efficiency, and focus on what truly matters - your work. Say goodbye to data chaos, and welcome the era of organized and intuitive sensor data management with Vivian Control Center!
