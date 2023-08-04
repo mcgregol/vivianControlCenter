@@ -12,7 +12,7 @@ Vivian Control Center is a revolutionary software solution, designed with the so
 
 But that's just the beginning!
 
-Vivian Control Center is an expert code-breaker. It deciphers byte-encoded output from your scans and converts it into easy-to-understand strings. Our software skillfully focuses on the essential data, ignoring redundant introductory lines, and converts the key-value pairs into a handy dictionary format.
+Vivian Control Center is an expert code-breaker. It deciphers byte-encoded output from your scans and converts it into easy-to-understand strings. Our software skillfully focuses on the essential data, ignoring redundant introductory lines, and converts the ID-UUID pairs into a handy dictionary format.
 
 Wait, there's more!
 
