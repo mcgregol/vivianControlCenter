@@ -42,4 +42,5 @@ for sensor in sensors_list:
     ls_lines = ls.stdout.splitlines()
     for line in ls_lines:
         files_list.append(line)
-    print(files_list)
+    for item in sensors_list:
+        subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs', shell=True)
