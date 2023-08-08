@@ -35,12 +35,12 @@ for key, value in dictionary.items():
     sensor = Sensor(key, value)
     sensors_list.append(sensor)
 
-# Print the details of each sensor
+# Fetch files from the each sensor
 for sensor in sensors_list:
     files_list = []
     ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
     ls_lines = ls.stdout.splitlines()
     for line in ls_lines:
         files_list.append(line)
-    for item in sensors_list:
+    for item in files_list:
         subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs', shell=True)
