@@ -4,17 +4,30 @@ A graphic user interface to easily transfer data from Viiiiva heart rate monitor
 ### WARNING: still in early stages of development
 
 ## Details
+🚀 Presenting the Vivian Control Center! 🚀
 
-🎉 Introducing Vivian Control Center, the revolutionary sensor management system that effortlessly tames the complexity of your sensor network! 🎉
+Unlock the full potential of in-depth athletic analytics with Vivian Control Center, a groundbreaking tool designed specifically for managing 4iiii Viiiiva sensors worn by elite athletes.
 
-Are you tired of juggling multiple tools to manage your diverse array of sensors? With Vivian Control Center, you can confidently command your entire network from one consolidated platform. Whether you're monitoring environmental changes, tracking equipment efficiency, or assessing building safety, Vivian Control Center seamlessly interprets your sensor data and delivers actionable insights.
+The Vivian Control Center is not just an application - it's a revolution, leveraging the power of Python scripting to provide a seamless, powerful interface for sensor management and data collection.
 
-No more deciphering raw data! The powerful Scan feature of Vivian Control Center parses sensor outputs into easy-to-understand key-value pairs. In just a few seconds, you can see what's going on with every sensor in your network.
+🏋️ Unearth the depth of your performance, with insights from your sensor data! 🏋️‍♀️
 
-More than just a viewing platform, Vivian Control Center is a fully interactive tool. It provides comprehensive management capabilities to directly interact with each sensor, fetching file data with ease using unique sensor identifiers.
+The Vivian Control Center communicates directly with 4iiii Viiiiva sensors, extracting valuable real-time data and facilitating unprecedented insights into athlete performance.
 
-But Vivian Control Center doesn't stop there. Need to back up sensor data? No problem! With a single command, the Control Center allows you to copy the data files associated with any sensor directly to your desired location. Efficient and fast, just like it should be.
+🔑 Key Features:
 
-When you're dealing with complex sensor networks, don't let your tools limit your capability. Gain complete control, superior understanding, and swift data manipulation with Vivian Control Center. It's not just about reading data; it's about taking command of your sensor network.
+1️⃣ Automated Sensor Scanning: The tool initiates a vivtool scan subprocess that automatically detects all active Viiiiva sensors in the vicinity. This is followed by an intelligent termination process that ensures no resource leakage, even with a large number of sensors.
 
-Step into the future of sensor network management. Embrace the power, precision, and convenience of Vivian Control Center. Discover the difference today!
+2️⃣ Real-time Data Parsing: Vivian Control Center then interprets the raw byte data from each sensor scan, decoding and splitting it into a manageable format. It discards unnecessary information and extracts the essence - the sensor id and uuid, which are crucial for subsequent steps.
+
+3️⃣ Smart Sensor Object Management: Our tool converts the parsed data into user-friendly Sensor objects. Each sensor is given a unique identity in the system with its id and uuid, creating a detailed sensor inventory for easy management.
+
+4️⃣ Instant File Retrieval: Using each sensor's uuid, the application runs the vivtool ls --uuid command to list files associated with each sensor. This means you have immediate access to essential training data at your fingertips!
+
+5️⃣ Seamless Data Export: Vivian Control Center goes a step further by offering an automated data export function. It copies the files associated with each sensor to a specific location of your choice for further analysis.
+
+In the high-stakes world of athletic performance, every heartbeat counts. With Vivian Control Center, you can tap into the rhythm of your performance, translate raw sensor data into meaningful insights, and push beyond the boundaries of your potential.
+
+Harness the power of data and elevate your performance with Vivian Control Center. The journey to peak performance begins here.
+
+Note: The use of the Vivian Control Center requires a compatible 4iiii Viiiiva sensor.
