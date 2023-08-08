@@ -4,18 +4,17 @@ A graphic user interface to easily transfer data from Viiiiva heart rate monitor
 ### WARNING: still in early stages of development
 
 ## Details
-🎉 Introducing Vivian Control Center - the future of sensor data management! 🎉
 
-Are you tired of manually wading through seas of sensor data? Want a tool that automates the process, streamlining your workflows and making data management a breeze? Look no further!
+🎉 Introducing Vivian Control Center, the revolutionary sensor management system that effortlessly tames the complexity of your sensor network! 🎉
 
-Vivian Control Center is a revolutionary software solution, designed with the sole purpose of making sensor data management simple, efficient, and stress-free. It speaks the language of your hardware through the potent vivtool scan command, conducting real-time scans and extracting valuable data with pinpoint accuracy.
+Are you tired of juggling multiple tools to manage your diverse array of sensors? With Vivian Control Center, you can confidently command your entire network from one consolidated platform. Whether you're monitoring environmental changes, tracking equipment efficiency, or assessing building safety, Vivian Control Center seamlessly interprets your sensor data and delivers actionable insights.
 
-But that's just the beginning!
+No more deciphering raw data! The powerful Scan feature of Vivian Control Center parses sensor outputs into easy-to-understand key-value pairs. In just a few seconds, you can see what's going on with every sensor in your network.
 
-Vivian Control Center is an expert code-breaker. It deciphers byte-encoded output from your scans and converts it into easy-to-understand strings. Our software skillfully focuses on the essential data, ignoring redundant introductory lines, and converts the ID-UUID pairs into a handy dictionary format.
+More than just a viewing platform, Vivian Control Center is a fully interactive tool. It provides comprehensive management capabilities to directly interact with each sensor, fetching file data with ease using unique sensor identifiers.
 
-Wait, there's more!
+But Vivian Control Center doesn't stop there. Need to back up sensor data? No problem! With a single command, the Control Center allows you to copy the data files associated with any sensor directly to your desired location. Efficient and fast, just like it should be.
 
-Vivian Control Center takes data processing to the next level, creating Sensor objects for every dictionary entry. Stored in an accessible list, these objects are ready for you to manipulate, analyze, or visualize - whatever suits your needs best!
+When you're dealing with complex sensor networks, don't let your tools limit your capability. Gain complete control, superior understanding, and swift data manipulation with Vivian Control Center. It's not just about reading data; it's about taking command of your sensor network.
 
-Step into the future of sensor data management with Vivian Control Center. Simplify your process, enhance efficiency, and focus on what truly matters - your work. Say goodbye to data chaos, and welcome the era of organized and intuitive sensor data management with Vivian Control Center!
+Step into the future of sensor network management. Embrace the power, precision, and convenience of Vivian Control Center. Discover the difference today!
