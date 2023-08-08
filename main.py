@@ -46,15 +46,16 @@ for sensor in sensors_list:
         for line in ls_lines:
             files_list.append(line)
         for item in files_list:
-            print("moving " + item + " to /Users/achieve/Desktop/outputs/" + sensor.id + "...")
+            print("    moving " + item + " to /Users/achieve/Desktop/outputs/" + sensor.id + "...")
             subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs/' + sensor.id, shell=True)
     else:
+        print("/Users/achieve/Desktop/outputs/" + sensor.id + " already exists")
         ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
         ls_lines = ls.stdout.splitlines()
         for line in ls_lines:
             files_list.append(line)
         for item in files_list:
-            print("moving " + item + " to /Users/achieve/Desktop/outputs/" + sensor.id + "...")
+            print("    moving " + item + " to /Users/achieve/Desktop/outputs/" + sensor.id + "...")
             subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs/' + sensor.id, shell=True)
 
 print("done!")
