@@ -1,5 +1,5 @@
 from sensor import Sensor
-import subprocess, time
+import os, subprocess, time
 
 # Start 'vivtool scan' as a subprocess
 scan = subprocess.Popen('vivtool scan', shell=True, stdout=subprocess.PIPE)
@@ -38,9 +38,18 @@ for key, value in dictionary.items():
 # Fetch files from the each sensor
 for sensor in sensors_list:
     files_list = []
-    ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
-    ls_lines = ls.stdout.splitlines()
-    for line in ls_lines:
-        files_list.append(line)
-    for item in files_list:
-        subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs', shell=True)
+    if os.path.isdir('/Users/achieve/outputs/' + sensor.id):
+        ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
+        ls_lines = ls.stdout.splitlines()
+        for line in ls_lines:
+            files_list.append(line)
+        for item in files_list:
+            subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs/' + sensor.id, shell=True)
+    else:
+        os.mkdir('/Users/achieve/Desktop/outputs/' + sensor.id)
+        ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
+        ls_lines = ls.stdout.splitlines()
+        for line in ls_lines:
+            files_list.append(line)
+        for item in files_list:
+            subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs/' + sensor.id, shell=True)
