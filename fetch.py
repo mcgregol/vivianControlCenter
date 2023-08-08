@@ -37,4 +37,9 @@ for key, value in dictionary.items():
 
 # Print the details of each sensor
 for sensor in sensors_list:
-    print(sensor.list() + "\n")
+    files_list = []
+    ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
+    ls_lines = ls.stdout.splitlines()
+    for line in ls_lines:
+        files_list.append(line)
+    print(files_list)
