@@ -38,18 +38,24 @@ for key, value in dictionary.items():
 # Fetch files from the each sensor
 for sensor in sensors_list:
     files_list = []
-    if os.path.isdir('/Users/achieve/outputs/' + sensor.id):
+    if not os.path.isdir('/Users/achieve/Desktop/outputs/' + sensor.id):
+        print("creating /Users/achieve/Desktop/outputs/" + sensor.id)
+        os.makedirs('/Users/achieve/Desktop/outputs/' + sensor.id)
         ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
         ls_lines = ls.stdout.splitlines()
         for line in ls_lines:
             files_list.append(line)
         for item in files_list:
+            print("moving " + item + " to /Users/achieve/Desktop/outputs/" + sensor.id + "...")
             subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs/' + sensor.id, shell=True)
     else:
-        os.mkdir('/Users/achieve/Desktop/outputs/' + sensor.id)
         ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
         ls_lines = ls.stdout.splitlines()
         for line in ls_lines:
             files_list.append(line)
         for item in files_list:
+            print("moving " + item + " to /Users/achieve/Desktop/outputs/" + sensor.id + "...")
             subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs/' + sensor.id, shell=True)
+
+print("done!")
+    
