@@ -24,7 +24,7 @@ The Vivian Control Center communicates directly with 4iiii Viiiiva sensors, extr
 
 4️⃣ Instant File Retrieval: Using each sensor's uuid, the application runs the vivtool ls --uuid command to list files associated with each sensor. This means you have immediate access to essential training data at your fingertips!
 
-5️⃣ Seamless Data Export: Vivian Control Center goes a step further by offering an automated data export function. It copies the files associated with each sensor to a specific location of your choice for further analysis.
+5️⃣ Seamless Data Export: Vivian Control Center goes a step further by offering an automated data export function. It copies the files associated with each sensor to a specific location of your choice while grouping by sensor ID for further analysis.
 
 In the high-stakes world of athletic performance, every heartbeat counts. With Vivian Control Center, you can tap into the rhythm of your performance, translate raw sensor data into meaningful insights, and push beyond the boundaries of your potential.
 
