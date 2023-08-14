@@ -1,11 +1,42 @@
 import tkinter as tk
-import os, subprocess, time
+from tkinter import messagebox
 from sensor import Sensor
+import os, subprocess, time
+
+sensors_list = []
 
 def on_select():
     selected_indices = listbox.curselection()
-    selected_items = [listbox.get(i) for i in selected_indices]
-    print("Selected items:", selected_items)
+    selected_ids = [listbox.get(i) for i in selected_indices]
+    selected_sensors = []
+    for sensor_id in selected_ids:
+        for sensor in sensors_list:
+            if sensor.id == sensor_id:
+                selected_sensors.append(sensor)
+    # Fetch files from the each sensor
+    for sensor in selected_sensors:
+        files_list = []
+        if not os.path.isdir('/Users/achieve/Desktop/outputs/' + sensor.id):
+            print("creating /Users/achieve/Desktop/outputs/" + sensor.id)
+            os.makedirs('/Users/achieve/Desktop/outputs/' + sensor.id)
+            ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
+            ls_lines = ls.stdout.splitlines()
+            for line in ls_lines:
+                files_list.append(line)
+            for item in files_list:
+                print("    moving " + item + " to /Users/achieve/Desktop/outputs/" + sensor.id + "...")
+                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs/' + sensor.id, shell=True)
+        else:
+            print("/Users/achieve/Desktop/outputs/" + sensor.id + " already exists")
+            ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
+            ls_lines = ls.stdout.splitlines()
+            for line in ls_lines:
+                files_list.append(line)
+            for item in files_list:
+                print("    moving " + item + " to /Users/achieve/Desktop/outputs/" + sensor.id + "...")
+                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs/' + sensor.id, shell=True)
+    messagebox.showinfo("Done!", "Success! Files located in \'outputs\' folder on the Desktop.")
+    root.destroy()
 
 def get_sensors():
     listbox.delete(0, tk.END)  # Clear the current Listbox items
@@ -34,7 +65,6 @@ def get_sensors():
         key, value = line.split()
         dictionary[key] = value
 
-    sensors_list = []
     for key, value in dictionary.items():
         key = key[1:-1]
         value = value[1:-1]
@@ -45,12 +75,15 @@ def get_sensors():
     for sensor in sensors_list:
         listbox.insert(tk.END, sensor.id)
 
+    listbox.select_set(0, tk.END)
+    messagebox.showinfo("Sensor Selection", "Use \'CTRL + click\' to deslect a sensor. Use \'CTRL + drag\' to select multiple sensors. All sensors are selected by default.")
+
 root = tk.Tk()
 root.title("Select Sensors to Use")
 root.geometry("400x400")
 
 # Listbox to display sensors
-listbox = tk.Listbox(root, selectmode=tk.MULTIPLE)
+listbox = tk.Listbox(root, selectmode=tk.EXTENDED)
 listbox.pack(pady=20, padx=20)
 
 # Button to retrieve selected items
