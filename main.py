@@ -76,8 +76,10 @@ def get_sensors():
         # Add sensors to the Listbox
         for sensor in sensors_list:
             listbox.insert(tk.END, sensor.id)
+        confirm_button.config(state=tk.NORMAL)
     else:
         listbox.insert(tk.END, "No sensors found...")
+        listbox.insert(tk.END, "Is bluetooth on?")
 
 
     listbox.select_set(0, tk.END)
@@ -94,6 +96,7 @@ scan_button.pack(pady=20)
 # Listbox to display sensors
 listbox = tk.Listbox(root, selectmode=tk.EXTENDED)
 listbox.pack(pady=20, padx=20)
+listbox.insert(tk.END, "-no sensors selected-")
 
 confirm_button = tk.Button(root, text="Confirm", command=on_select, state=tk.DISABLED)
 confirm_button.pack(pady=20)
