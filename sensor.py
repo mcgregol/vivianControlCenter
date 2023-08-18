@@ -14,4 +14,4 @@ class Sensor:
                 raise Exception("Failed to connect to device")
 
             battery_level = await client.read_gatt_char(BATTERY_LEVEL_CHARACTERISTIC_UUID)
-            return str(battery_level[0]) + "%"  # Assuming battery level is a single byte 0-100%
+            return str(battery_level[0]) # Assuming battery level is a single byte 0-100%
