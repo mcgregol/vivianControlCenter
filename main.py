@@ -1,6 +1,6 @@
 import tkinter as tk
-from tkinter import messagebox
 from sensor import Sensor
+from tkinter import messagebox
 import os, subprocess, time
 
 sensors_list = []
@@ -75,7 +75,7 @@ def get_sensors():
     if sensors_list:
         # Add sensors to the Listbox
         for sensor in sensors_list:
-            listbox.insert(tk.END, sensor.id)
+            listbox.insert(tk.END, sensor.id + sensor.get_batt)
         confirm_button.config(state=tk.NORMAL)
     else:
         listbox.insert(tk.END, "No sensors found...")
@@ -102,4 +102,3 @@ confirm_button = tk.Button(root, text="Confirm", command=on_select, state=tk.DIS
 confirm_button.pack(pady=20)
 
 root.mainloop()
-
