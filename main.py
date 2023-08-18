@@ -1,7 +1,7 @@
 import tkinter as tk
 from sensor import Sensor
 from tkinter import messagebox
-import os, subprocess, time
+import asyncio, os, subprocess, time
 
 sensors_list = []
 
@@ -73,9 +73,11 @@ def get_sensors():
 
     # Check if sensors found
     if sensors_list:
+        loop = asyncio.get_event_loop()
         # Add sensors to the Listbox
         for sensor in sensors_list:
-            listbox.insert(tk.END, sensor.id + sensor.get_batt)
+            battery_level = loop.run_until_complete(sensor.get_batt())
+            listbox.insert(tk.END, sensor.id + " {" + battery_level + "%}")
         confirm_button.config(state=tk.NORMAL)
     else:
         listbox.insert(tk.END, "No sensors found...")
