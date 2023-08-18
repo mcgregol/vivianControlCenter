@@ -71,9 +71,14 @@ def get_sensors():
         sensor = Sensor(key, value)
         sensors_list.append(sensor)
 
-    # Add sensors to the Listbox
-    for sensor in sensors_list:
-        listbox.insert(tk.END, sensor.id)
+    # Check if sensors found
+    if sensors_list:
+        # Add sensors to the Listbox
+        for sensor in sensors_list:
+            listbox.insert(tk.END, sensor.id)
+    else:
+        listbox.insert(tk.END, "No sensors found...")
+
 
     listbox.select_set(0, tk.END)
     messagebox.showinfo("Sensor Selection", "Use \'CTRL + click\' to deslect a sensor. Use \'CTRL + drag\' to select multiple sensors. All sensors are selected by default.")
@@ -82,15 +87,15 @@ root = tk.Tk()
 root.title("Select Sensors to Use")
 root.geometry("400x400")
 
-# Listbox to display sensors
-listbox = tk.Listbox(root, selectmode=tk.EXTENDED)
-listbox.pack(pady=20, padx=20)
-
 # Button to retrieve selected items
 scan_button = tk.Button(root, text="Scan", command=get_sensors)
 scan_button.pack(pady=20)
 
-confirm_button = tk.Button(root, text="Confirm", command=on_select)
+# Listbox to display sensors
+listbox = tk.Listbox(root, selectmode=tk.EXTENDED)
+listbox.pack(pady=20, padx=20)
+
+confirm_button = tk.Button(root, text="Confirm", command=on_select, state=tk.DISABLED)
 confirm_button.pack(pady=20)
 
 root.mainloop()
