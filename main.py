@@ -10,10 +10,10 @@ def on_select():
     selected_ids = [listbox.get(i) for i in selected_indices]
     selected_sensors = []
     for sensor_id in selected_ids:
+        #   remove battery percentage from listbox id
         whole = sensor_id.split()
         only_id = whole[0]
         for sensor in sensors_list:
-            # atp battery percentage must be removed from sensor_id
             if sensor.id == only_id:
                 selected_sensors.append(sensor)
     # Fetch files from the each sensor
@@ -103,7 +103,7 @@ listbox = tk.Listbox(root, selectmode=tk.EXTENDED)
 listbox.pack(pady=20, padx=20)
 listbox.insert(tk.END, "TIP: scan to find sensors")
 
-confirm_button = tk.Button(root, text="Confirm", command=on_select, state=tk.DISABLED)
+confirm_button = tk.Button(root, text="Get Data", command=on_select, state=tk.DISABLED)
 confirm_button.pack(pady=20)
 
 root.mainloop()
