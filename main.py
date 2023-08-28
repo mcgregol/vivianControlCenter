@@ -92,7 +92,7 @@ def get_sensors():
 
 root = tk.Tk()
 root.title("Select Sensors to Use")
-root.geometry("400x400")
+root.geometry("800x600")
 
 # Button to retrieve selected items
 scan_button = tk.Button(root, text="Scan", command=get_sensors)
@@ -101,7 +101,7 @@ scan_button.pack(pady=20)
 # Listbox to display sensors
 listbox = tk.Listbox(root, selectmode=tk.EXTENDED)
 listbox.pack(pady=20, padx=20)
-listbox.insert(tk.END, "-no sensors selected-")
+listbox.insert(tk.END, "TIP: scan to find sensors")
 
 confirm_button = tk.Button(root, text="Confirm", command=on_select, state=tk.DISABLED)
 confirm_button.pack(pady=20)
