@@ -10,8 +10,11 @@ def on_select():
     selected_ids = [listbox.get(i) for i in selected_indices]
     selected_sensors = []
     for sensor_id in selected_ids:
+        whole = sensor_id.split()
+        only_id = whole[0]
         for sensor in sensors_list:
-            if sensor.id == sensor_id:
+            # atp battery percentage must be removed from sensor_id
+            if sensor.id == only_id:
                 selected_sensors.append(sensor)
     # Fetch files from the each sensor
     for sensor in selected_sensors:
