@@ -30,4 +30,4 @@ This is more than just an application—it's a paradigm shift. Fusing the power 
 
 In the relentless pursuit of athletic excellence, data is your ally. With Vivian Control Center's upgraded toolkit, transform raw sensor data into unparalleled insights. Push beyond known boundaries and ascend to peak performance.
 
-Reminder: To unleash the full prowess of the Vivian Control Center, a compatible 4iiii Viiiiva sensor is essential.
+Reminder: To unleash the full prowess of the Vivian Control Center, a compatible 4iiii Viiiiva sensor is required.
