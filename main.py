@@ -5,6 +5,23 @@ import asyncio, os, subprocess, time
 
 sensors_list = []
 
+def clock_sync():
+    selected_indices = listbox.curselection()
+    selected_ids = [listbox.get(i) for i in selected_indices]
+    selected_sensors = []
+    for sensor_id in selected_ids:
+        #   remove battery percentage from listbox id
+        whole = sensor_id.split()
+        only_id = whole[0]
+        for sensor in sensors_list:
+            if sensor.id == only_id:
+                selected_sensors.append(sensor)
+    for sensor in selected_sensors:
+        print(sensor.id + ": ")
+        date = subprocess.run('vivtool date -h -s now --uuid ' + sensor.uuid, shell=True)
+        print("Clocks now synced!")
+
+
 def on_select():
     selected_indices = listbox.curselection()
     selected_ids = [listbox.get(i) for i in selected_indices]
@@ -82,6 +99,7 @@ def get_sensors():
             battery_level = loop.run_until_complete(sensor.get_batt())
             listbox.insert(tk.END, sensor.id + " {" + battery_level + "%}")
         confirm_button.config(state=tk.NORMAL)
+        date_button.config(state=tk.NORMAL)
     else:
         listbox.insert(tk.END, "No sensors found...")
         listbox.insert(tk.END, "Is bluetooth on?")
@@ -105,5 +123,8 @@ listbox.insert(tk.END, "TIP: scan to find sensors")
 
 confirm_button = tk.Button(root, text="Get Data", command=on_select, state=tk.DISABLED)
 confirm_button.pack(pady=20)
+
+date_button = tk.Button(root, text="Sync Clocks", command=clock_sync, state=tk.DISABLED)
+date_button.pack(pady=20)
 
 root.mainloop()
