@@ -5,6 +5,9 @@ import asyncio, os, subprocess, time
 
 sensors_list = []
 
+def erase():
+    messagebox.askokcancel("Caution", "You will not be able to recover files from these sensors. Are you sure you want to continue?")
+
 def clock_sync():
     selected_indices = listbox.curselection()
     selected_ids = [listbox.get(i) for i in selected_indices]
@@ -101,6 +104,7 @@ def get_sensors():
             listbox.insert(tk.END, sensor.id + " {" + battery_level + "%}")
         confirm_button.config(state=tk.NORMAL)
         date_button.config(state=tk.NORMAL)
+        erase.config(state=tk.NORMAL)
     else:
         listbox.insert(tk.END, "No sensors found...")
         listbox.insert(tk.END, "Is bluetooth on?")
@@ -127,5 +131,8 @@ confirm_button.pack(pady=20)
 
 date_button = tk.Button(root, text="Sync Clocks", command=clock_sync, state=tk.DISABLED)
 date_button.pack(pady=20)
+
+erase = tk.Button(root, text="Erase Data", command=erase, state=tk.DISABLED)
+erase.pack(pady=20)
 
 root.mainloop()
