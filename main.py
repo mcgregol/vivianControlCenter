@@ -21,7 +21,6 @@ def clock_sync():
         date = subprocess.run('vivtool date -h -s now --uuid ' + sensor.uuid, shell=True)
         print("Clocks now synced!")
 
-
 def on_select():
     selected_indices = listbox.curselection()
     selected_ids = [listbox.get(i) for i in selected_indices]
@@ -59,6 +58,8 @@ def on_select():
     root.destroy()
 
 def get_sensors():
+    scan_button['text'] = 'Scanning...'
+    root.update()
     listbox.delete(0, tk.END)  # Clear the current Listbox items
 
     # Start 'vivtool scan' as a subprocess
@@ -104,9 +105,9 @@ def get_sensors():
         listbox.insert(tk.END, "No sensors found...")
         listbox.insert(tk.END, "Is bluetooth on?")
 
-
     listbox.select_set(0, tk.END)
     messagebox.showinfo("Sensor Selection", "Use \'CTRL + click\' to deslect a sensor. Use \'CTRL + drag\' to select multiple sensors. All sensors are selected by default.")
+    scan_button['text'] = 'Scan'
 
 root = tk.Tk()
 root.title("Select Sensors to Use")
