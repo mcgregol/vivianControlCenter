@@ -6,7 +6,28 @@ import asyncio, os, subprocess, time
 sensors_list = []
 
 def erase():
-    messagebox.askokcancel("Caution", "You will not be able to recover files from these sensors. Are you sure you want to continue?")
+    if not messagebox.askokcancel("Caution", "You will not be able to recover files from these sensors. Are you sure you want to continue?"):
+        return
+    selected_indices = listbox.curselection()
+    selected_ids = [listbox.get(i) for i in selected_indices]
+    selected_sensors = []
+    for sensor_id in selected_ids:
+        #   remove battery percentage from listbox id
+        whole = sensor_id.split()
+        only_id = whole[0]
+        for sensor in sensors_list:
+            if sensor.id == only_id:
+                selected_sensors.append(sensor)
+    # Fetch files from the each sensor
+    for sensor in selected_sensors:
+        files_list = []
+        ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
+        ls_lines = ls.stdout.splitlines()
+        for line in ls_lines:
+            files_list.append(line)
+        for item in files_list:
+            subprocess.run('vivtool rm --uuid ' + sensor.uuid + " " + item, shell=True)
+        print(sensor.id + " is erased...")
 
 def clock_sync():
     selected_indices = listbox.curselection()
