@@ -1,5 +1,5 @@
 # VivianControlCenter
-A graphic user interface to easily transfer data from Viiiiva heart rate monitor to MacBook.
+A graphic user interface to easily transfer data from Viiiiva heart rate monitor to MacBook via [vivtool](https://github.com/p00ya/vivian).
 
 ### WARNING: still in early stages of development
 
