@@ -136,7 +136,7 @@ def get_sensors():
             listbox.insert(tk.END, sensor.id + " {" + battery_level + "%}")
         confirm_button.config(state=tk.NORMAL)
         date_button.config(state=tk.NORMAL)
-        erase.config(state=tk.NORMAL)
+        erase_button.config(state=tk.NORMAL)
     else:
         listbox.insert(tk.END, "No sensors found...")
         listbox.insert(tk.END, "Is bluetooth on?")
