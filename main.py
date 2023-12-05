@@ -1,6 +1,6 @@
 import tkinter as tk
 from sensor import Sensor
-from tkinter import messagebox
+from tkinter import messagebox, PhotoImage
 import asyncio, os, subprocess, time
 
 sensors_list = []
@@ -166,5 +166,9 @@ date_button.pack(pady=20)
 
 erase_button = tk.Button(root, text="Erase Data", command=erase, state=tk.DISABLED)
 erase_button.pack(pady=20)
+
+logo = PhotoImage(file='logo.png')
+logo_label = tk.Label(image=logo)
+logo_label.pack(side='right', padx=40)
 
 root.mainloop()
