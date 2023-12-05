@@ -1,9 +1,20 @@
 import tkinter as tk
 from sensor import Sensor
-from tkinter import messagebox, PhotoImage
+from tkinter import messagebox, PhotoImage, filedialog
 import asyncio, os, subprocess, time
 
 sensors_list = []
+
+def get_save_path():
+    with open('save_path.conf', 'r') as file:
+        return file.read() + "/ViiiivaOutput"
+
+def set_save_path():
+    directory = filedialog.askdirectory()
+    if directory:
+        with open('save_path.conf', 'w') as file:
+            file.write(directory)
+        save_path_label.config(text="Saving to: " + directory + "/ViiiivaOutput")
 
 def erase():
     if not messagebox.askokcancel("Caution", "You will not be able to recover files from these sensors. Are you sure you want to continue?"):
@@ -69,28 +80,28 @@ def on_select():
     # Fetch files from the each sensor
     for sensor in selected_sensors:
         files_list = []
-        if not os.path.isdir('/Users/achieve/Desktop/outputs/' + sensor.id):
-            print("creating /Users/achieve/Desktop/outputs/" + sensor.id)
-            os.makedirs('/Users/achieve/Desktop/outputs/' + sensor.id)
+        if not os.path.isdir(get_save_path() + sensor.id):
+            print("creating " + get_save_path() + "/" + sensor.id)
+            os.makedirs(get_save_path() + '/' + sensor.id)
             ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
             ls_lines = ls.stdout.splitlines()
             for line in ls_lines:
                 files_list.append(line)
             for item in files_list:
-                print("    moving " + item + " to /Users/achieve/Desktop/outputs/" + sensor.id + "...")
-                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs/' + sensor.id, shell=True)
+                print("    moving " + item + " to " + get_save_path() + "/" + sensor.id + "...")
+                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' ' + get_save_path() + "/" + sensor.id, shell=True)
         else:
-            print("/Users/achieve/Desktop/outputs/" + sensor.id + " already exists")
+            print(get_save_path() + "/" + sensor.id + " already exists")
             ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
             ls_lines = ls.stdout.splitlines()
             for line in ls_lines:
                 files_list.append(line)
             for item in files_list:
-                print("    moving " + item + " to /Users/achieve/Desktop/outputs/" + sensor.id + "...")
-                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs/' + sensor.id, shell=True)
+                print("    moving " + item + " to " + get_save_path() + "/" + sensor.id + "...")
+                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' ' + get_save_path() + " " + sensor.id, shell=True)
     root.update()
     confirm_button['text'] = 'Get Data'
-    messagebox.showinfo("Done!", "Success! Files located in \'outputs\' folder on the Desktop.")
+    messagebox.showinfo("Done!", "Success! Files located in " + get_save_path() + "...")
 
 def get_sensors():
     scan_button['text'] = 'Scanning...'
@@ -137,6 +148,7 @@ def get_sensors():
         confirm_button.config(state=tk.NORMAL)
         date_button.config(state=tk.NORMAL)
         erase_button.config(state=tk.NORMAL)
+        save_path_button.config(state=tk.NORMAL)
     else:
         listbox.insert(tk.END, "No sensors found...")
         listbox.insert(tk.END, "Is bluetooth on?")
@@ -147,7 +159,7 @@ def get_sensors():
 
 root = tk.Tk()
 root.title("Select Sensors to Use")
-root.geometry("800x600")
+root.geometry("700x700")
 
 # Button to retrieve selected items
 scan_button = tk.Button(root, text="Scan", command=get_sensors)
@@ -157,6 +169,12 @@ scan_button.pack(pady=20)
 listbox = tk.Listbox(root, selectmode=tk.EXTENDED)
 listbox.pack(pady=20, padx=20)
 listbox.insert(tk.END, "TIP: scan to find sensors")
+
+save_path_button = tk.Button(root, text="Set Save Path", command=set_save_path, state=tk.DISABLED)
+save_path_button.pack(pady=20)
+
+save_path_label = tk.Label(root, text=get_save_path())
+save_path_label.pack(pady=20)
 
 confirm_button = tk.Button(root, text="Get Data", command=on_select, state=tk.DISABLED)
 confirm_button.pack(pady=20)
