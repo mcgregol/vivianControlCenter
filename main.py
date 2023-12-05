@@ -1,6 +1,6 @@
 import tkinter as tk
 from sensor import Sensor
-from tkinter import messagebox, PhotoImage, filedialog
+from tkinter import messagebox, PhotoImage, filedialog, ttk
 import asyncio, os, subprocess, time
 
 sensors_list = []
@@ -65,6 +65,8 @@ def clock_sync():
     messagebox.showinfo("Done!", "Selected sensor clocks now synced.")
 
 def on_select():
+    #if is_custom_time.get():
+    #print("now go to popup calendar")
     confirm_button['text'] = 'Retrieving...'
     root.update()
     selected_indices = listbox.curselection()
@@ -80,7 +82,7 @@ def on_select():
     # Fetch files from the each sensor
     for sensor in selected_sensors:
         files_list = []
-        if not os.path.isdir(get_save_path() + sensor.id):
+        if not os.path.isdir(get_save_path() + "/" + sensor.id):
             print("creating " + get_save_path() + "/" + sensor.id)
             os.makedirs(get_save_path() + '/' + sensor.id)
             ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
@@ -98,7 +100,7 @@ def on_select():
                 files_list.append(line)
             for item in files_list:
                 print("    moving " + item + " to " + get_save_path() + "/" + sensor.id + "...")
-                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' ' + get_save_path() + " " + sensor.id, shell=True)
+                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' ' + get_save_path() + "/" + sensor.id, shell=True)
     root.update()
     confirm_button['text'] = 'Get Data'
     messagebox.showinfo("Done!", "Success! Files located in " + get_save_path() + "...")
@@ -159,7 +161,7 @@ def get_sensors():
 
 root = tk.Tk()
 root.title("Select Sensors to Use")
-root.geometry("700x700")
+root.geometry("800x800")
 
 # Button to retrieve selected items
 scan_button = tk.Button(root, text="Scan", command=get_sensors)
@@ -176,8 +178,18 @@ save_path_button.pack(pady=20)
 save_path_label = tk.Label(root, text=get_save_path())
 save_path_label.pack(pady=20)
 
+#is_custom_time = tk.BooleanVar()
+#toggle_custom_time = tk.Checkbutton(root, text="Specify custom date range?",
+#    variable = is_custom_time,
+#    onvalue = True,
+#    offvalue = False)
+#toggle_custom_time.pack(pady=20)
+
 confirm_button = tk.Button(root, text="Get Data", command=on_select, state=tk.DISABLED)
 confirm_button.pack(pady=20)
+
+separator = ttk.Separator(root, orient='horizontal')
+separator.pack(pady=5, fill='x')
 
 date_button = tk.Button(root, text="Sync Clocks", command=clock_sync, state=tk.DISABLED)
 date_button.pack(pady=20)
