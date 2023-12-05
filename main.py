@@ -65,8 +65,9 @@ def clock_sync():
     messagebox.showinfo("Done!", "Selected sensor clocks now synced.")
 
 def on_select():
-    #if is_custom_time.get():
-    #print("now go to popup calendar")
+    if is_custom_time.get() == 1:
+        print("now go to popup calendar")
+        return
     confirm_button['text'] = 'Retrieving...'
     root.update()
     selected_indices = listbox.curselection()
@@ -178,12 +179,13 @@ save_path_button.pack(pady=20)
 save_path_label = tk.Label(root, text=get_save_path())
 save_path_label.pack(pady=20)
 
-#is_custom_time = tk.BooleanVar()
-#toggle_custom_time = tk.Checkbutton(root, text="Specify custom date range?",
-#    variable = is_custom_time,
-#    onvalue = True,
-#    offvalue = False)
-#toggle_custom_time.pack(pady=20)
+is_custom_time = tk.IntVar()
+toggle_custom_time = tk.Checkbutton(root,
+    text="Specify custom date range?",
+    variable = is_custom_time,
+    onvalue=1,
+    offvalue=0)
+toggle_custom_time.pack(pady=20)
 
 confirm_button = tk.Button(root, text="Get Data", command=on_select, state=tk.DISABLED)
 confirm_button.pack(pady=20)
