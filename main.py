@@ -8,6 +8,8 @@ sensors_list = []
 def erase():
     if not messagebox.askokcancel("Caution", "You will not be able to recover files from these sensors. Are you sure you want to continue?"):
         return
+    erase_button['text'] = 'Erasing...'
+    root.update()
     selected_indices = listbox.curselection()
     selected_ids = [listbox.get(i) for i in selected_indices]
     selected_sensors = []
@@ -27,9 +29,13 @@ def erase():
             files_list.append(line)
         for item in files_list:
             subprocess.run('vivtool rm --uuid ' + sensor.uuid + " " + item, shell=True)
-        print(sensor.id + " is erased...")
+        erase_button['text'] = 'Erase Data'
+        root.update()
+        messagebox.showinfo("Done!", "Selected sensors now erased.")
 
 def clock_sync():
+    date_button['text'] = 'Syncing...'
+    root.update()
     selected_indices = listbox.curselection()
     selected_ids = [listbox.get(i) for i in selected_indices]
     selected_sensors = []
@@ -43,9 +49,13 @@ def clock_sync():
     for sensor in selected_sensors:
         print(sensor.id + ": ")
         date = subprocess.run('vivtool date -h -s now --uuid ' + sensor.uuid, shell=True)
-        print("Clocks now synced!")
+    date_button['text'] = 'Sync Clocks'
+    root.update()
+    messagebox.showinfo("Done!", "Selected sensor clocks now synced.")
 
 def on_select():
+    confirm_button['text'] = 'Retrieving...'
+    root.update()
     selected_indices = listbox.curselection()
     selected_ids = [listbox.get(i) for i in selected_indices]
     selected_sensors = []
@@ -78,8 +88,9 @@ def on_select():
             for item in files_list:
                 print("    moving " + item + " to /Users/achieve/Desktop/outputs/" + sensor.id + "...")
                 subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' /Users/achieve/Desktop/outputs/' + sensor.id, shell=True)
+    root.update()
+    confirm_button['text'] = 'Get Data'
     messagebox.showinfo("Done!", "Success! Files located in \'outputs\' folder on the Desktop.")
-    root.destroy()
 
 def get_sensors():
     scan_button['text'] = 'Scanning...'
@@ -153,7 +164,7 @@ confirm_button.pack(pady=20)
 date_button = tk.Button(root, text="Sync Clocks", command=clock_sync, state=tk.DISABLED)
 date_button.pack(pady=20)
 
-erase = tk.Button(root, text="Erase Data", command=erase, state=tk.DISABLED)
-erase.pack(pady=20)
+erase_button = tk.Button(root, text="Erase Data", command=erase, state=tk.DISABLED)
+erase_button.pack(pady=20)
 
 root.mainloop()
