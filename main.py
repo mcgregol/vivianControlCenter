@@ -65,6 +65,9 @@ def clock_sync():
     messagebox.showinfo("Done!", "Selected sensor clocks now synced.")
 
 def on_select():
+    if get_save_path() == "Saving to: config required/ViiiivaOutput":
+        messagebox.showwarning("Warning!", "Please set save path...")
+        return
     if is_custom_time.get() == 1:
         print("now go to popup calendar")
         return
