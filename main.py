@@ -92,7 +92,7 @@ def on_select():
                 files_list.append(line)
             for item in files_list:
                 print("    moving " + item + " to " + get_save_path() + "/" + sensor.id + "...")
-                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' ' + get_save_path() + "/" + sensor.id, shell=True)
+                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
         else:
             print(get_save_path() + "/" + sensor.id + " already exists")
             ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
@@ -101,7 +101,7 @@ def on_select():
                 files_list.append(line)
             for item in files_list:
                 print("    moving " + item + " to " + get_save_path() + "/" + sensor.id + "...")
-                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' ' + get_save_path() + "/" + sensor.id, shell=True)
+                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
     root.update()
     confirm_button['text'] = 'Get Data'
     messagebox.showinfo("Done!", "Success! Files located in " + get_save_path() + "...")
