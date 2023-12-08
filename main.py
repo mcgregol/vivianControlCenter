@@ -1,9 +1,47 @@
 import tkinter as tk
 from sensor import Sensor
 from tkinter import messagebox, PhotoImage, filedialog, ttk
-import asyncio, os, subprocess, time
+from tkcalendar import Calendar
+import asyncio, datetime, os, subprocess, time
+
+start_date = ''
+end_date = ''
 
 sensors_list = []
+
+def get_date_range():
+    def set_range():
+        start_date = start_calendar.get_date()
+        end_date = end_calendar.get_date()
+        print(start_date, end_date)
+        date_popup.destroy()
+
+    if is_custom_time.get() == 0:
+        return
+    today = datetime.date.today()
+    date_popup = tk.Toplevel(root)
+    date_popup.geometry("800x400")
+    date_popup.title("Select Date Range")
+    start_date_label = tk.Label(date_popup, text="Select start date:")
+    end_date_label = tk.Label(date_popup, text="Select end date:")
+    start_date_label.grid(column=0, row=0, padx=60, pady=40)
+    end_date_label.grid(column=2, row=0, padx=80, pady=40)
+    start_calendar = Calendar(date_popup,
+        selectmode='day',
+        year=today.year,
+        month=today.month,
+        day=today.day)
+    start_calendar.grid(column=0, row=1, padx=60)
+    end_calendar = Calendar(date_popup,
+        selectmode='day',
+        year=today.year,
+        month=today.month,
+        day=today.day)
+    end_calendar.grid(column=2, row=1, padx=80)
+    confirm_range_button = tk.Button(date_popup, text='Confirm', command=set_range)
+    confirm_range_button.grid(column=1, row=2, pady=40)
+
+
 
 def get_save_path():
     with open('save_path.conf', 'r') as file:
@@ -187,7 +225,8 @@ toggle_custom_time = tk.Checkbutton(root,
     text="Specify custom date range?",
     variable = is_custom_time,
     onvalue=1,
-    offvalue=0)
+    offvalue=0,
+    command=get_date_range)
 toggle_custom_time.pack(pady=20)
 
 confirm_button = tk.Button(root, text="Get Data", command=on_select, state=tk.DISABLED)
