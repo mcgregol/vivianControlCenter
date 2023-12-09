@@ -6,7 +6,6 @@ import asyncio, datetime, os, subprocess, time
 
 start_date = ''
 end_date = ''
-
 sensors_list = []
 
 def get_date_range():
