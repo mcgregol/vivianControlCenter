@@ -41,8 +41,6 @@ def get_date_range():
     confirm_range_button = tk.Button(date_popup, text='Confirm', command=set_range)
     confirm_range_button.grid(column=1, row=2, pady=40)
 
-
-
 def get_save_path():
     with open('save_path.conf', 'r') as file:
         return file.read() + "/ViiiivaOutput"
@@ -102,6 +100,19 @@ def clock_sync():
     root.update()
     messagebox.showinfo("Done!", "Selected sensor clocks now synced.")
 
+def get_data():
+    if is_custom_time.get() == 0:
+        on_select()
+    elif is_custom_time.get() == 1:
+        on_select(start_date, end_date)
+    else:
+        return
+
+#  method used if custom date is selected
+def on_select(init_start, init_end):
+    pass
+
+# method used if unspecified
 def on_select():
     if get_save_path() == "Saving to: config required/ViiiivaOutput":
         messagebox.showwarning("Warning!", "Please set save path...")
