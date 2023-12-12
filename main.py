@@ -1,4 +1,5 @@
 import tkinter as tk
+from dateutil import parser
 from sensor import Sensor
 from tkinter import messagebox, PhotoImage, filedialog, ttk
 from tkcalendar import Calendar
@@ -7,6 +8,11 @@ import asyncio, datetime, os, subprocess, time
 start_date = ''
 end_date = ''
 sensors_list = []
+
+def parse_date(input_date):
+    datey = parser.parse(input_date)
+    formatted_date = datey.strftime('%Y-%m-%d')
+    return(formatted_date)
 
 def get_date_range():
     def set_range():
