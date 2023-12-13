@@ -8,7 +8,7 @@ start_date = ''
 end_date = ''
 sensors_list = []
 
-def get_date_range():
+def set_date_range():
     def set_range():
         start_date = start_calendar.get_date()
         end_date = end_calendar.get_date()
@@ -100,15 +100,11 @@ def clock_sync():
     messagebox.showinfo("Done!", "Selected sensor clocks now synced.")
 
 def get_data():
-    if is_custom_time.get() == 0:
-        on_select()
-    elif is_custom_time.get() == 1:
-        on_select(start_date, end_date)
-    else:
-        return
+    run_export(start_date, end_date)
 
-#  method used if custom date is selected
-def on_select(init_start, init_end):
+#  checks if checkbox is ticked inside method and condensed so only one is needed
+#  if is_custom_time.get() == 1 then check if in date range
+def run_export(init_start, init_end):
     #  takes ISO 8601 format and returns normal
     def parse_date(input_date):
         parsed_date = datetime.fromisoformat(input_date)
@@ -124,11 +120,10 @@ def on_select(init_start, init_end):
         #  returns True if date is within range
         return start_date_obj <= input_date_obj <= end_date_obj
 
-#  method used if unspecified
-def on_select():
     if get_save_path() == "Saving to: config required/ViiiivaOutput":
         messagebox.showwarning("Warning!", "Please set save path...")
         return
+
     confirm_button['text'] = 'Retrieving...'
     root.update()
     selected_indices = listbox.curselection()
@@ -141,6 +136,7 @@ def on_select():
         for sensor in sensors_list:
             if sensor.id == only_id:
                 selected_sensors.append(sensor)
+
     # Fetch files from the each sensor
     for sensor in selected_sensors:
         files_list = []
@@ -163,6 +159,7 @@ def on_select():
             for item in files_list:
                 print("    moving " + item + " to " + get_save_path() + "/" + sensor.id + "...")
                 subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+
     root.update()
     confirm_button['text'] = 'Get Data'
     messagebox.showinfo("Done!", "Success! Files located in " + get_save_path() + "...")
@@ -251,10 +248,10 @@ toggle_custom_time = tk.Checkbutton(root,
     variable = is_custom_time,
     onvalue=1,
     offvalue=0,
-    command=get_date_range)
+    command=set_date_range)
 toggle_custom_time.pack(pady=20)
 
-confirm_button = tk.Button(root, text="Get Data", command=on_select, state=tk.DISABLED)
+confirm_button = tk.Button(root, text="Get Data", command=get_data, state=tk.DISABLED)
 confirm_button.pack(pady=20)
 
 separator = ttk.Separator(root, orient='horizontal')
