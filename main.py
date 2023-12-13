@@ -1,9 +1,8 @@
 import tkinter as tk
-from datetime import datetime
 from sensor import Sensor
 from tkinter import messagebox, PhotoImage, filedialog, ttk
 from tkcalendar import Calendar
-import asyncio, os, subprocess, time
+import asyncio, datetime, os, subprocess, time
 
 start_date = ''
 end_date = ''
@@ -129,9 +128,6 @@ def on_select(init_start, init_end):
 def on_select():
     if get_save_path() == "Saving to: config required/ViiiivaOutput":
         messagebox.showwarning("Warning!", "Please set save path...")
-        return
-    if is_custom_time.get() == 1:
-        print("now go to popup calendar")
         return
     confirm_button['text'] = 'Retrieving...'
     root.update()
