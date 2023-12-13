@@ -1,5 +1,5 @@
 import tkinter as tk
-from datetime import datetime, timedelta
+from datetime import datetime
 from sensor import Sensor
 from tkinter import messagebox, PhotoImage, filedialog, ttk
 from tkcalendar import Calendar
@@ -116,7 +116,16 @@ def on_select(init_start, init_end):
         formatted_date = parsed_date.strftime('%Y-%m-%d')
         return(formatted_date)
 
-# method used if unspecified
+    def check_date(input_date):
+        #  convert strings to datetime objects
+        input_date_obj = datetime.strptime(input_date, '%m-%d-%Y')
+        start_date_obj = datetime.strptime(start_date, '%m-%d-%Y')
+        end_date_obj = datetime.strptime(end_date, '%m-%d-%Y')
+
+        #  returns True if date is within range
+        return start_date_obj <= input_date_obj <= end_date_obj
+
+#  method used if unspecified
 def on_select():
     if get_save_path() == "Saving to: config required/ViiiivaOutput":
         messagebox.showwarning("Warning!", "Please set save path...")
