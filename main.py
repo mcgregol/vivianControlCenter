@@ -163,6 +163,11 @@ def on_select():
     messagebox.showinfo("Done!", "Success! Files located in " + get_save_path() + "...")
 
 def get_sensors():
+    #  free up some oh-so-good memory
+    if sensors_list:
+        for sensor in sensors_list:
+            sensors_list.remove(sensor)
+            del sensor
     scan_button['text'] = 'Scanning...'
     root.update()
     listbox.delete(0, tk.END)  # Clear the current Listbox items
@@ -188,7 +193,7 @@ def get_sensors():
 
     # Parse each line into a key-value pair and store it in the dictionary, skipping the first two lines of output
     for line in lines[2:]:
-        key, value = line.split()
+        key, value = line.split(maxsplit=1)
         dictionary[key] = value
 
     for key, value in dictionary.items():
