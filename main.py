@@ -2,7 +2,8 @@ import tkinter as tk
 from sensor import Sensor
 from tkinter import messagebox, PhotoImage, filedialog, ttk
 from tkcalendar import Calendar
-import asyncio, datetime, os, subprocess, time
+import asyncio, os, subprocess, time
+from datetime import datetime
 
 start_date = ''
 end_date = ''
@@ -10,6 +11,7 @@ sensors_list = []
 
 def set_date_range():
     def set_range():
+        global start_date, end_date
         start_date = start_calendar.get_date()
         end_date = end_calendar.get_date()
         print(start_date, end_date)
@@ -17,7 +19,7 @@ def set_date_range():
 
     if is_custom_time.get() == 0:
         return
-    today = datetime.date.today()
+    today = datetime.today().date()
     date_popup = tk.Toplevel(root)
     date_popup.geometry("800x400")
     date_popup.title("Select Date Range")
@@ -100,6 +102,7 @@ def clock_sync():
     messagebox.showinfo("Done!", "Selected sensor clocks now synced.")
 
 def get_data():
+    global start_date, end_date
     run_export(start_date, end_date)
 
 #  checks if checkbox is ticked inside method and condensed so only one is needed
@@ -108,16 +111,19 @@ def run_export(init_start, init_end):
     #  takes ISO 8601 format and returns normal
     def parse_date(input_date):
         parsed_date = datetime.fromisoformat(input_date)
-        formatted_date = parsed_date.strftime('%Y-%m-%d')
-        return(formatted_date)
+        formatted_date = parsed_date.strftime('%m/%d/%y')
+        return formatted_date
 
     def check_date(input_date):
         #  convert strings to datetime objects
-        input_date_obj = datetime.strptime(input_date, '%m-%d-%Y')
-        start_date_obj = datetime.strptime(start_date, '%m-%d-%Y')
-        end_date_obj = datetime.strptime(end_date, '%m-%d-%Y')
+        mod_input_date = datetime.fromisoformat(input_date)
+        mod_input_date_str = datetime.strftime(mod_input_date, '%m/%d/%y')
+        input_date_obj = datetime.strptime(mod_input_date_str, '%m/%d/%y')
+        start_date_obj = datetime.strptime(init_start, '%m/%d/%y')
+        end_date_obj = datetime.strptime(init_end, '%m/%d/%y')
 
         #  returns True if date is within range
+        print(datetime.strftime)
         return start_date_obj <= input_date_obj <= end_date_obj
 
     if get_save_path() == "Saving to: config required/ViiiivaOutput":
@@ -139,26 +145,50 @@ def run_export(init_start, init_end):
 
     # Fetch files from the each sensor
     for sensor in selected_sensors:
-        files_list = []
+        file_list = []
         if not os.path.isdir(get_save_path() + "/" + sensor.id):
             print("creating " + get_save_path() + "/" + sensor.id)
             os.makedirs(get_save_path() + '/' + sensor.id)
-            ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
-            ls_lines = ls.stdout.splitlines()
-            for line in ls_lines:
-                files_list.append(line)
-            for item in files_list:
-                print("    moving " + item + " to " + get_save_path() + "/" + sensor.id + "...")
-                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+            ls = subprocess.run('vivtool ls -l --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
+            lines = ls.stdout.splitlines()
+            for line in lines:
+                parts = line.split()
+                if len(parts) == 3:
+                    file_info = {
+                        "file_size": int(parts[0]),
+                        "timestamp": parse_date(parts[1]),
+                        "filename": parts[2]
+                    }
+                    file_list.append(file_info)
+            for file_info in file_list:
+                if is_custom_time.get() == 1:
+                    if check_date(file_info["timestamp"]):         
+                        print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
+                        subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+                else:
+                    print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
+                    subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
         else:
             print(get_save_path() + "/" + sensor.id + " already exists")
-            ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
-            ls_lines = ls.stdout.splitlines()
-            for line in ls_lines:
-                files_list.append(line)
-            for item in files_list:
-                print("    moving " + item + " to " + get_save_path() + "/" + sensor.id + "...")
-                subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + item + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+            ls = subprocess.run('vivtool ls -l --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
+            lines = ls.stdout.splitlines()
+            for line in lines:
+                parts = line.split()
+                if len(parts) == 3:
+                    file_info = {
+                        "file_size": int(parts[0]),
+                        "timestamp": parts[1],
+                        "filename": parts[2]
+                    }
+                    file_list.append(file_info)
+            for file_info in file_list:
+                if is_custom_time.get() == 1:
+                    if check_date(file_info["timestamp"]):
+                        print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
+                        subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+                else:
+                    print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
+                    subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
 
     root.update()
     confirm_button['text'] = 'Get Data'
