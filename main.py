@@ -269,21 +269,6 @@ root = tk.Tk()
 root.title("Select Sensors to Use")
 root.geometry("800x800")
 
-# Button to retrieve selected items
-scan_button = tk.Button(root, text="Scan", command=get_sensors)
-scan_button.pack(pady=20)
-
-# Listbox to display sensors
-listbox = tk.Listbox(root, selectmode=tk.EXTENDED)
-listbox.pack(pady=20, padx=20)
-listbox.insert(tk.END, "TIP: scan to find sensors")
-
-save_path_button = tk.Button(root, text="Set Save Path", command=set_save_path, state=tk.DISABLED)
-save_path_button.pack(pady=20)
-
-save_path_label = tk.Label(root, text=get_save_path())
-save_path_label.pack(pady=10)
-
 is_custom_time = tk.IntVar()
 toggle_custom_time = tk.Checkbutton(root,
     text="Specify custom date range?",
@@ -298,6 +283,21 @@ min_filesize_label.pack()
 
 min_filesize_sp = tk.Spinbox(root, value=0, from_=0)
 min_filesize_sp.pack()
+
+# Button to retrieve selected items
+scan_button = tk.Button(root, text="Scan", command=get_sensors)
+scan_button.pack(pady=20)
+
+# Listbox to display sensors
+listbox = tk.Listbox(root, selectmode=tk.EXTENDED)
+listbox.pack(pady=20, padx=20)
+listbox.insert(tk.END, "TIP: scan to find sensors")
+
+save_path_button = tk.Button(root, text="Set Save Path", command=set_save_path, state=tk.DISABLED)
+save_path_button.pack(pady=20)
+
+save_path_label = tk.Label(root, text=get_save_path())
+save_path_label.pack(pady=10)
 
 confirm_button = tk.Button(root, text="Get Data", command=get_data, state=tk.DISABLED)
 confirm_button.pack(pady=20)
