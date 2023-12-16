@@ -114,6 +114,16 @@ def run_export(init_start, init_end):
         formatted_date = parsed_date.strftime('%m/%d/%y')
         return formatted_date
 
+    def check_size(input_size):
+        try:
+            #  convert bytes to kb
+            if (input_size / 1000) >= int(min_filesize_sp.get()):
+                return True
+            else:
+                return False
+        except:
+            return True
+
     def check_date(input_date):
         #  convert strings to datetime objects
         mod_input_date = datetime.fromisoformat(input_date)
@@ -161,13 +171,14 @@ def run_export(init_start, init_end):
                     }
                     file_list.append(file_info)
             for file_info in file_list:
-                if is_custom_time.get() == 1:
-                    if check_date(file_info["timestamp"]):         
+                if check_size(file_info['file_size']):
+                    if is_custom_time.get() == 1:
+                        if check_date(file_info["timestamp"]):         
+                            print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
+                            subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+                    else:
                         print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
                         subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
-                else:
-                    print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
-                    subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
         else:
             print(get_save_path() + "/" + sensor.id + " already exists")
             ls = subprocess.run('vivtool ls -l --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
@@ -182,13 +193,14 @@ def run_export(init_start, init_end):
                     }
                     file_list.append(file_info)
             for file_info in file_list:
-                if is_custom_time.get() == 1:
-                    if check_date(file_info["timestamp"]):
+                if check_size(file_info['file_size']):
+                    if is_custom_time.get() == 1:
+                        if check_date(file_info["timestamp"]):
+                            print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
+                            subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+                    else:
                         print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
                         subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
-                else:
-                    print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
-                    subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
 
     root.update()
     confirm_button['text'] = 'Get Data'
@@ -270,7 +282,7 @@ save_path_button = tk.Button(root, text="Set Save Path", command=set_save_path, 
 save_path_button.pack(pady=20)
 
 save_path_label = tk.Label(root, text=get_save_path())
-save_path_label.pack(pady=20)
+save_path_label.pack(pady=10)
 
 is_custom_time = tk.IntVar()
 toggle_custom_time = tk.Checkbutton(root,
@@ -279,7 +291,13 @@ toggle_custom_time = tk.Checkbutton(root,
     onvalue=1,
     offvalue=0,
     command=set_date_range)
-toggle_custom_time.pack(pady=20)
+toggle_custom_time.pack(pady=10)
+
+min_filesize_label = tk.Label(root, text="Min filesize filter (kb)\n0 for none")
+min_filesize_label.pack()
+
+min_filesize_sp = tk.Spinbox(root, value=0, from_=0)
+min_filesize_sp.pack()
 
 confirm_button = tk.Button(root, text="Get Data", command=get_data, state=tk.DISABLED)
 confirm_button.pack(pady=20)
@@ -291,7 +309,7 @@ date_button = tk.Button(root, text="Sync Clocks", command=clock_sync, state=tk.D
 date_button.pack(pady=20)
 
 erase_button = tk.Button(root, text="Erase Data", command=erase, state=tk.DISABLED)
-erase_button.pack(pady=20)
+erase_button.pack(pady=10)
 
 logo = PhotoImage(file='logo.png')
 logo_label = tk.Label(image=logo)
