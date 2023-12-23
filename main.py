@@ -79,7 +79,7 @@ def erase():
             subprocess.run('vivtool rm --uuid ' + sensor.uuid + " " + item, shell=True)
         erase_button['text'] = 'Erase Data'
         root.update()
-        messagebox.showinfo("Done!", "Selected sensors now erased.")
+    messagebox.showinfo("Done!", "Selected sensors now erased.")
 
 def clock_sync():
     date_button['text'] = 'Syncing...'
