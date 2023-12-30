@@ -71,12 +71,12 @@ def erase():
     # Fetch files from the each sensor
     for sensor in selected_sensors:
         files_list = []
-        ls = subprocess.run('vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
+        ls = subprocess.run('./vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
         ls_lines = ls.stdout.splitlines()
         for line in ls_lines:
             files_list.append(line)
         for item in files_list:
-            subprocess.run('vivtool rm --uuid ' + sensor.uuid + " " + item, shell=True)
+            subprocess.run('./vivtool rm --uuid ' + sensor.uuid + " " + item, shell=True)
         erase_button['text'] = 'Erase Data'
         root.update()
     messagebox.showinfo("Done!", "Selected sensors now erased.")
@@ -96,7 +96,7 @@ def clock_sync():
                 selected_sensors.append(sensor)
     for sensor in selected_sensors:
         print(sensor.id + ": ")
-        date = subprocess.run('vivtool date -h -s now --uuid ' + sensor.uuid, shell=True)
+        date = subprocess.run('./vivtool date -h -s now --uuid ' + sensor.uuid, shell=True)
     date_button['text'] = 'Sync Clocks'
     root.update()
     messagebox.showinfo("Done!", "Selected sensor clocks now synced.")
@@ -159,7 +159,7 @@ def run_export(init_start, init_end):
         if not os.path.isdir(get_save_path() + "/" + sensor.id):
             print("creating " + get_save_path() + "/" + sensor.id)
             os.makedirs(get_save_path() + '/' + sensor.id)
-            ls = subprocess.run('vivtool ls -l --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
+            ls = subprocess.run('./vivtool ls -l --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
             lines = ls.stdout.splitlines()
             for line in lines:
                 parts = line.split()
@@ -175,13 +175,13 @@ def run_export(init_start, init_end):
                     if is_custom_time.get() == 1:
                         if check_date(file_info["timestamp"]):         
                             print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
-                            subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+                            subprocess.run('./vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
                     else:
                         print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
-                        subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+                        subprocess.run('./vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
         else:
             print(get_save_path() + "/" + sensor.id + " already exists")
-            ls = subprocess.run('vivtool ls -l --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
+            ls = subprocess.run('./vivtool ls -l --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
             lines = ls.stdout.splitlines()
             for line in lines:
                 parts = line.split()
@@ -197,10 +197,10 @@ def run_export(init_start, init_end):
                     if is_custom_time.get() == 1:
                         if check_date(file_info["timestamp"]):
                             print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
-                            subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+                            subprocess.run('./vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
                     else:
                         print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
-                        subprocess.run('vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+                        subprocess.run('./vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
 
     root.update()
     confirm_button['text'] = 'Get Data'
@@ -217,7 +217,7 @@ def get_sensors():
     listbox.delete(0, tk.END)  # Clear the current Listbox items
 
     # Start 'vivtool scan' as a subprocess
-    scan = subprocess.Popen('vivtool scan', shell=True, stdout=subprocess.PIPE)
+    scan = subprocess.Popen('./vivtool scan', shell=True, stdout=subprocess.PIPE)
 
     # Allow the scan command to run for 5 seconds, then attempt to stop it
     time.sleep(5)
