@@ -1,6 +1,6 @@
 import tkinter as tk
 from sensor import Sensor
-from tkinter import messagebox, PhotoImage, filedialog, ttk
+from tkinter import ttk, messagebox, PhotoImage, filedialog, ttk
 from tkcalendar import Calendar
 import asyncio, os, subprocess, time
 from datetime import datetime
@@ -153,8 +153,44 @@ def run_export(init_start, init_end):
             if sensor.id == only_id:
                 selected_sensors.append(sensor)
 
+    #  launch progress bar here
+    #      popup window should have:
+    #        sensor name
+    #        sensor bar
+    #        'total'
+    #        total bar
+
+    progress_popup = tk.Toplevel(root)
+    progress_popup.geometry("400x250")
+    progress_popup.title("Transferring data...")
+    #  eventually add sensor id here instead of static text
+    current_label = tk.Label(progress_popup, text='Current sensor')
+    current_var = tk.IntVar()
+    current_bar = ttk.Progressbar(progress_popup,
+        variable=current_var,
+        mode='determinate',
+        maximum=200,
+        length=300)
+    total_label = tk.Label(progress_popup, text='Total')
+    total_var = tk.IntVar()
+    #  need to move this to access file_list
+    total_bar = ttk.Progressbar(progress_popup,
+        variable=total_var,
+        mode='determinate',
+        maximum=len(selected_sensors),
+        length=300)
+
+    current_label.pack(side='top', pady=20)
+    current_bar.pack(side='top')
+    total_bar.pack(side='bottom', pady=20)
+    total_label.pack(side='bottom')
+
     # Fetch files from the each sensor
     for sensor in selected_sensors:
+        current_label.config(text=sensor.id)
+        current_var.set(0)
+        progress_popup.update()
+
         file_list = []
         if not os.path.isdir(get_save_path() + "/" + sensor.id):
             print("creating " + get_save_path() + "/" + sensor.id)
@@ -170,6 +206,7 @@ def run_export(init_start, init_end):
                         "filename": parts[2]
                     }
                     file_list.append(file_info)
+            current_bar['maximum'] = len(file_list)
             for file_info in file_list:
                 if check_size(file_info['file_size']):
                     if is_custom_time.get() == 1:
@@ -179,6 +216,8 @@ def run_export(init_start, init_end):
                     else:
                         print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
                         subprocess.run('./vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+                current_var.set(current_var.get() + 1)
+                progress_popup.update()
         else:
             print(get_save_path() + "/" + sensor.id + " already exists")
             ls = subprocess.run('./vivtool ls -l --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
@@ -192,6 +231,7 @@ def run_export(init_start, init_end):
                         "filename": parts[2]
                     }
                     file_list.append(file_info)
+            current_bar['maximum'] = len(file_list)
             for file_info in file_list:
                 if check_size(file_info['file_size']):
                     if is_custom_time.get() == 1:
@@ -201,10 +241,15 @@ def run_export(init_start, init_end):
                     else:
                         print("    moving " + file_info["filename"] + " to " + get_save_path() + "/" + sensor.id + "...")
                         subprocess.run('./vivtool cp --uuid ' + sensor.uuid + ' ' + file_info["filename"] + ' \"' + get_save_path() + "/" + sensor.id + "\"", shell=True)
+                current_var.set(current_var.get() + 1)
+                progress_popup.update()
+        total_var.set(total_var.get() + 1)
+        progress_popup.update()
 
     root.update()
     confirm_button['text'] = 'Get Data'
     messagebox.showinfo("Done!", "Success! Files located in " + get_save_path() + "...")
+    progress_popup.destroy()
 
 def get_sensors():
     #  free up some oh-so-good memory
@@ -213,8 +258,8 @@ def get_sensors():
             sensors_list.remove(sensor)
             del sensor
     scan_button['text'] = 'Scanning...'
-    root.update()
     listbox.delete(0, tk.END)  # Clear the current Listbox items
+    root.update()
 
     # Start 'vivtool scan' as a subprocess
     scan = subprocess.Popen('./vivtool scan', shell=True, stdout=subprocess.PIPE)
