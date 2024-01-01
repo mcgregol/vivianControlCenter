@@ -319,8 +319,12 @@ def get_sensors():
     for key, value in dictionary.items():
         key = key[1:-1]
         value = value[1:-1]
-        sensor = Sensor(key, value)
-        sensors_list.append(sensor)
+        new_sensor = Sensor(key, value)
+
+        #  check for repeats
+        existing_sensor = next((sensor for sensor in sensors_list if sensor.id == new_sensor.id), None)
+        if not existing_sensor:
+            sensors_list.append(new_sensor)
 
     # Check if sensors found
     if sensors_list:
