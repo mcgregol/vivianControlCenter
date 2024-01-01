@@ -56,8 +56,10 @@ def set_save_path():
 def erase():
     if not messagebox.askokcancel("Caution", "You will not be able to recover files from these sensors. Are you sure you want to continue?"):
         return
+
     erase_button['text'] = 'Erasing...'
     root.update()
+
     selected_indices = listbox.curselection()
     selected_ids = [listbox.get(i) for i in selected_indices]
     selected_sensors = []
@@ -68,17 +70,53 @@ def erase():
         for sensor in sensors_list:
             if sensor.id == only_id:
                 selected_sensors.append(sensor)
+
+    progress_popup = tk.Toplevel(root)
+    progress_popup.geometry("400x250")
+    progress_popup.title("Clearing files...")
+    #  eventually add sensor id here instead of static text
+    current_label = tk.Label(progress_popup, text='Current sensor')
+    current_var = tk.IntVar()
+    current_bar = ttk.Progressbar(progress_popup,
+        variable=current_var,
+        mode='determinate',
+        maximum=200,
+        length=300)
+    total_label = tk.Label(progress_popup, text='Total')
+    total_var = tk.IntVar()
+    #  need to move this to access file_list
+    total_bar = ttk.Progressbar(progress_popup,
+        variable=total_var,
+        mode='determinate',
+        maximum=len(selected_sensors),
+        length=300)
+
+    current_label.pack(side='top', pady=20)
+    current_bar.pack(side='top')
+    total_bar.pack(side='bottom', pady=20)
+    total_label.pack(side='bottom')
+
     # Fetch files from the each sensor
     for sensor in selected_sensors:
+        current_label.config(text=sensor.id)
+        current_var.set(0)
+        progress_popup.update()
+
         files_list = []
         ls = subprocess.run('./vivtool ls --uuid ' + sensor.uuid, shell=True, capture_output=True, text=True)
         ls_lines = ls.stdout.splitlines()
         for line in ls_lines:
             files_list.append(line)
+            current_bar['maximum'] = len(files_list)
         for item in files_list:
             subprocess.run('./vivtool rm --uuid ' + sensor.uuid + " " + item, shell=True)
-        erase_button['text'] = 'Erase Data'
-        root.update()
+            current_var.set(current_var.get() + 1)
+            progress_popup.update()
+        total_var.set(total_var.get() + 1)
+        progress_popup.update()
+    progress_popup.destroy()
+    erase_button['text'] = 'Erase Data'
+    root.update()
     messagebox.showinfo("Done!", "Selected sensors now erased.")
 
 def clock_sync():
@@ -152,13 +190,6 @@ def run_export(init_start, init_end):
         for sensor in sensors_list:
             if sensor.id == only_id:
                 selected_sensors.append(sensor)
-
-    #  launch progress bar here
-    #      popup window should have:
-    #        sensor name
-    #        sensor bar
-    #        'total'
-    #        total bar
 
     progress_popup = tk.Toplevel(root)
     progress_popup.geometry("400x250")
